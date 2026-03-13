@@ -1,0 +1,66 @@
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\SolanaApp-ReactNative\src\components\AnalysisPanel.tsx
+  95:33  error  Unnecessary escape character: \"  no-useless-escape
+  95:44  error  Unnecessary escape character: \"  no-useless-escape
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\SolanaApp-ReactNative\src\components\UserStats.tsx
+  16:6  warning  React Hook useEffect has a missing dependency: 'loadProfile'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\SolanaApp-ReactNative\src\components\WalletButton.tsx
+  28:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\SolanaApp-ReactNative\src\lib\supabase.ts
+  25:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:16  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\SolanaApp-ReactNative\src\lib\wallet.ts
+   76:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   76:68  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  123:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  123:70  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  185:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  185:70  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\SolanaApp-ReactNative\supabase\functions\analyze-crypto\index.ts
+  134:36  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  275:12  error  '_' is defined but never used             @typescript-eslint/no-unused-vars
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\src\components\AnalysisPanel.tsx
+   63:45  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   63:82  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   79:36  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   85:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  167:15  error  Empty block statement                     no-empty
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\src\components\UserStats.tsx
+  16:6  warning  React Hook useEffect has a missing dependency: 'loadProfile'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\src\components\WalletButton.tsx
+  28:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\src\lib\supabase.ts
+  25:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:16  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\src\lib\wallet.ts
+   76:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   76:68  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  123:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  123:70  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  185:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  185:70  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Exequiel\Documents\LIBROS Y DOCUMENTOS\Biblioredes\PROYECTOS\Nueva carpeta\Markets Vision\supabase\functions\analyze-crypto\index.ts
+  115:19  error  'query' is never reassigned. Use 'const' instead          prefer-const
+  115:26  error  'walletAddress' is never reassigned. Use 'const' instead  prefer-const
+  159:36  error  Unexpected any. Specify a different type                  @typescript-eslint/no-explicit-any
+  301:12  error  '_' is defined but never used                             @typescript-eslint/no-unused-vars
+
+Ô£û 39 problems (37 errors, 2 warnings)
+
