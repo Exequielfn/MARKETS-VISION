@@ -4,7 +4,7 @@ import { RecentAnalyses } from "./components/RecentPredictions";
 import { UserStats } from "./components/UserStats";
 import { NotificationBanner } from "./components/NotificationBanner";
 import { DarkModeToggle } from "./components/DarkModeToggle";
-import MarketsLogo from "../Markets_logo.png";
+import MarketsLogo from "./Markets_Logo_New.png";
 
 function App() {
   return (
@@ -15,7 +15,13 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-0">
-              <img src={MarketsLogo} alt="Markets Vision" className="h-10 sm:h-12 w-auto" />
+              <button 
+                onClick={() => window.location.reload()} 
+                className="transition-transform hover:scale-105 active:scale-95 duration-200 focus:outline-none"
+                title="Reload Page"
+              >
+                <img src={MarketsLogo} alt="Markets Vision" className="h-10 sm:h-12 w-auto" />
+              </button>
               <div>
                 <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Markets Vision

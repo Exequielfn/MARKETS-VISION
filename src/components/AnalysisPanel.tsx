@@ -22,9 +22,9 @@ interface AnalysisResult {
   analysis: {
     technical_indicators: {
       rsi_14: number;
-      ema_13: number;
-      ema_25: number;
-      ema_50: number;
+      sma_21: number;
+      sma_50: number;
+      sma_200: number;
       price_change: number;
     };
     market_conditions: {
@@ -115,11 +115,11 @@ export function AnalysisPanel() {
       });
 
       if (error) {
-        throw new Error(error.message || "Error en el análisis. Por favor intenta nuevamente.");
+        throw new Error(error.message || "Error in analysis. Please try again.");
       }
 
       if (!data) {
-        throw new Error("Respuesta vacía del servidor de Supabase.");
+        throw new Error("Empty response from Supabase server.");
       }
 
       const analysisResult = data as AnalysisResult;
@@ -152,19 +152,19 @@ export function AnalysisPanel() {
     } catch (error) {
       console.error("Analysis error:", error);
 
-      let errorMessage = "Error en el análisis. Por favor intenta nuevamente.";
+      let errorMessage = "Error in analysis. Please try again.";
       const msg = (error as Error).message || "";
 
       if (msg.includes("Missing API configuration")) {
-        errorMessage = "Configuración faltante. Por favor revisa SETUP_GUIDE.md para configurar las variables de entorno.";
+        errorMessage = "Missing configuration. Please check the setup to configure environment variables.";
       } else if (msg.includes("API call frequency limit") || msg.includes("API limit") || msg.includes("rate limit")) {
-        errorMessage = "Límite de API alcanzado. Por favor intenta nuevamente en un minuto.";
+        errorMessage = "API limit reached. Please try again in a minute.";
       } else if (msg.includes("Invalid") || msg.includes("No data available") || msg.includes("not supported")) {
-        errorMessage = `Símbolo \"${overrideSymbol}\" no encontrado o no soportado. Prueba "Apple" o "Bitcoin".`;
+        errorMessage = `Symbol \"${overrideSymbol}\" not found or not supported. Try "Apple" or "Bitcoin".`;
       } else if (msg.includes("Missing Alpha Vantage API key")) {
-        errorMessage = "Clave API de Alpha Vantage faltante. Por favor configura ALPHAVANTAGE_API_KEY.";
+        errorMessage = "Missing Alpha Vantage API key. Please configure ALPHAVANTAGE_API_KEY.";
       } else if (msg.includes("Network") || msg.includes("fetch")) {
-        errorMessage = "Error de conexión. Por favor verifica tu conexión a internet.";
+        errorMessage = "Connection error. Please check your internet connection.";
       }
 
       alert(errorMessage);
@@ -267,16 +267,16 @@ export function AnalysisPanel() {
                 <div className="text-lg font-bold text-gray-900 dark:text-white">{result.analysis.technical_indicators.rsi_14.toFixed(2)}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">EMA (13)</div>
-                <div className="text-lg font-bold text-gray-900 dark:text-white">${result.analysis.technical_indicators.ema_13.toFixed(2)}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">SMA (21)</div>
+                <div className="text-lg font-bold text-gray-900 dark:text-white">${result.analysis.technical_indicators.sma_21.toFixed(2)}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">EMA (25)</div>
-                <div className="text-lg font-bold text-gray-900 dark:text-white">${result.analysis.technical_indicators.ema_25.toFixed(2)}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">SMA (50)</div>
+                <div className="text-lg font-bold text-gray-900 dark:text-white">${result.analysis.technical_indicators.sma_50.toFixed(2)}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">EMA (50)</div>
-                <div className="text-lg font-bold text-gray-900 dark:text-white">${result.analysis.technical_indicators.ema_50.toFixed(2)}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">SMA (200)</div>
+                <div className="text-lg font-bold text-gray-900 dark:text-white">${result.analysis.technical_indicators.sma_200.toFixed(2)}</div>
               </div>
             </div>
           </div>

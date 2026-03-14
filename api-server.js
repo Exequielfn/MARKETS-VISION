@@ -38,17 +38,11 @@ function calculateRSI(prices, period = 14) {
   return 100 - 100 / (1 + rs);
 }
 
-function calculateEMA(prices, period) {
+function calculateSMA(prices, period) {
   if (prices.length < period) return prices[prices.length - 1];
-
-  const multiplier = 2 / (period + 1);
-  let ema = prices.slice(0, period).reduce((a, b) => a + b) / period;
-
-  for (let i = period; i < prices.length; i++) {
-    ema = (prices[i] - ema) * multiplier + ema;
-  }
-
-  return ema;
+  const slice = prices.slice(-period);
+  const sum = slice.reduce((a, b) => a + b, 0);
+  return sum / period;
 }
 
 // Mock data generator for fallback analysis
@@ -72,9 +66,9 @@ function generateMockAnalysis(symbol) {
         : currentPrice;
 
   const rsi = Math.floor(Math.random() * 40) + 30;
-  const ema13 = currentPrice * 0.99;
-  const ema25 = currentPrice * 0.98;
-  const ema50 = currentPrice * 0.97;
+  const sma21 = currentPrice * 0.99;
+  const sma50 = currentPrice * 0.98;
+  const sma200 = currentPrice * 0.95;
 
   const chartData = [];
   const now = new Date();
@@ -103,9 +97,9 @@ function generateMockAnalysis(symbol) {
     analysis: {
       technical_indicators: {
         rsi_14: rsi,
-        ema_13: ema13,
-        ema_25: ema25,
-        ema_50: ema50,
+        sma_21: sma21,
+        sma_50: sma50,
+        sma_200: sma200,
         price_change: (Math.random() - 0.5) * 5,
       },
       market_conditions: {
@@ -141,7 +135,7 @@ app.post("/api/analyze-crypto", async (req, res) => {
     if (!timeSeries || data["Error Message"] || data["Note"]) {
       return res.json(generateMockAnalysis(symbol));
     }
-    const dates = Object.keys(timeSeries).sort().slice(-30);
+    const dates = Object.keys(timeSeries).sort().slice(-250);
     const prices = dates.map((d) => parseFloat(timeSeries[d]["4. close"]));
     const volumes = dates.map((d) => parseFloat(timeSeries[d]["5. volume"]));
     const assetType = "stock";
@@ -154,23 +148,23 @@ app.post("/api/analyze-crypto", async (req, res) => {
         : 0;
 
     const rsi14 = calculateRSI(prices, 14);
-    const ema13 = calculateEMA(prices, 13);
-    const ema25 = calculateEMA(prices, 25);
-    const ema50 = calculateEMA(prices, 50);
+    const sma21 = calculateSMA(prices, 21);
+    const sma50 = calculateSMA(prices, 50);
+    const sma200 = calculateSMA(prices, 200);
 
     let sentiment = "neutral";
     let confidence = 60;
 
-    if (rsi14 > 70 && currentPrice > ema13) {
+    if (rsi14 > 70 && currentPrice > sma21) {
       sentiment = "bullish";
       confidence = 75;
-    } else if (rsi14 < 30 && currentPrice < ema13) {
+    } else if (rsi14 < 30 && currentPrice < sma21) {
       sentiment = "bearish";
       confidence = 75;
-    } else if (ema13 > ema25 && ema25 > ema50) {
+    } else if (sma21 > sma50 && sma50 > sma200) {
       sentiment = "bullish";
       confidence = 70;
-    } else if (ema13 < ema25 && ema25 < ema50) {
+    } else if (sma21 < sma50 && sma50 < sma200) {
       sentiment = "bearish";
       confidence = 70;
     }
@@ -188,10 +182,10 @@ app.post("/api/analyze-crypto", async (req, res) => {
       volume: volumes[i],
     }));
 
-    let reasoning = `Market shows ${sentiment} sentiment with RSI ${rsi14.toFixed(1)} and EMA(13) ${ema13.toFixed(2)} vs EMA(50) ${ema50.toFixed(2)}.`;
+    let reasoning = `Market shows ${sentiment} sentiment with RSI ${rsi14.toFixed(1)} and SMA(21) ${sma21.toFixed(2)} vs SMA(200) ${sma200.toFixed(2)}.`;
     if (GEMINI_API_KEY) {
       try {
-        const prompt = `Analyze ${symbol}: Current price $${currentPrice.toFixed(2)}, RSI(14)=${rsi14.toFixed(1)}, EMA(13)=$${ema13.toFixed(2)}, EMA(25)=$${ema25.toFixed(2)}, EMA(50)=$${ema50.toFixed(2)}, ${priceChange > 0 ? "up" : "down"} ${Math.abs(priceChange).toFixed(1)}%. Provide market Support and resistance levels for the day trading, key insights and trend analysis in 200 words or less. Be concise and actionable.`;
+        const prompt = `Analyze ${symbol}: Current price $${currentPrice.toFixed(2)}, RSI(14)=${rsi14.toFixed(1)}, SMA(21)=$${sma21.toFixed(2)}, SMA(50)=$${sma50.toFixed(2)}, SMA(200)=$${sma200.toFixed(2)}, ${priceChange > 0 ? "up" : "down"} ${Math.abs(priceChange).toFixed(1)}%. Provide market Support and resistance levels for the day trading, key insights and trend analysis in 200 words or less. Be concise and actionable. YOU MUST RESPOND ONLY IN ENGLISH.`;
         const geminiUrl = "https://api.poe.com/v1/chat/completions";
         const resp = await fetch(geminiUrl, {
           method: "POST",
@@ -226,13 +220,13 @@ app.post("/api/analyze-crypto", async (req, res) => {
       analysis: {
         technical_indicators: {
           rsi_14: parseFloat(rsi14.toFixed(2)),
-          ema_13: parseFloat(ema13.toFixed(2)),
-          ema_25: parseFloat(ema25.toFixed(2)),
-          ema_50: parseFloat(ema50.toFixed(2)),
+          sma_21: parseFloat(sma21.toFixed(2)),
+          sma_50: parseFloat(sma50.toFixed(2)),
+          sma_200: parseFloat(sma200.toFixed(2)),
           price_change: parseFloat(priceChange.toFixed(2)),
         },
         market_conditions: {
-          trend: ema13 > ema50 ? "uptrend" : "downtrend",
+          trend: sma21 > sma200 ? "uptrend" : "downtrend",
           strength: Math.abs(rsi14 - 50) > 20 ? "strong" : "moderate",
         },
       },

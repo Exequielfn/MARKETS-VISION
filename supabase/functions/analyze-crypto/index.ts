@@ -87,17 +87,11 @@ function calculateRSI(prices: number[], period = 14): number {
   return 100 - 100 / (1 + rs);
 }
 
-function calculateEMA(prices: number[], period: number): number {
+function calculateSMA(prices: number[], period: number): number {
   if (prices.length < period) return prices[prices.length - 1];
-
-  const multiplier = 2 / (period + 1);
-  let ema = prices.slice(0, period).reduce((a, b) => a + b) / period;
-
-  for (let i = period; i < prices.length; i++) {
-    ema = (prices[i] - ema) * multiplier + ema;
-  }
-
-  return ema;
+  const slice = prices.slice(-period);
+  const sum = slice.reduce((a, b) => a + b, 0);
+  return sum / period;
 }
 
 
@@ -152,7 +146,7 @@ const server = async (req: Request) => {
       });
     }
 
-    const dates = Object.keys(timeSeries).sort().slice(-30);
+    const dates = Object.keys(timeSeries).sort().slice(-250);
     const prices = dates.map((date) =>
       parseFloat(timeSeries[date]["4. close"]),
     );
@@ -164,15 +158,15 @@ const server = async (req: Request) => {
     const priceChange = prices.length > 1 ? ((prices[prices.length - 1] - prices[prices.length - 2]) / prices[prices.length - 2]) * 100 : 0;
 
     const rsi14 = calculateRSI(prices, 14);
-    const ema13 = calculateEMA(prices, 13);
-    const ema25 = calculateEMA(prices, 25);
-    const ema50 = calculateEMA(prices, 50);
+    const sma21 = calculateSMA(prices, 21);
+    const sma50 = calculateSMA(prices, 50);
+    const sma200 = calculateSMA(prices, 200);
 
     let sentiment = "neutral";
-    if (rsi14 > 70 && currentPrice > ema13) sentiment = "bullish";
-    else if (rsi14 < 30 && currentPrice < ema13) sentiment = "bearish";
-    else if (ema13 > ema25 && ema25 > ema50) sentiment = "bullish";
-    else if (ema13 < ema25 && ema25 < ema50) sentiment = "bearish";
+    if (rsi14 > 70 && currentPrice > sma21) sentiment = "bullish";
+    else if (rsi14 < 30 && currentPrice < sma21) sentiment = "bearish";
+    else if (sma21 > sma50 && sma50 > sma200) sentiment = "bullish";
+    else if (sma21 < sma50 && sma50 < sma200) sentiment = "bearish";
 
     const chartData = dates.map((date, i) => ({
       date,
@@ -180,8 +174,8 @@ const server = async (req: Request) => {
       volume: volumes[i],
     }));
 
-    let aiReasoning = `Sentiment ${sentiment}. Price $${currentPrice.toFixed(2)}. RSI(14) ${rsi14.toFixed(1)}. EMA13 $${ema13.toFixed(2)}, EMA25 $${ema25.toFixed(2)}, EMA50 $${ema50.toFixed(2)}. Change ${priceChange.toFixed(1)}%.`;
-    const prompt = `Analyze stock ${symbol}: Current price $${currentPrice.toFixed(2)}, RSI(14)=${rsi14.toFixed(1)}, EMA(13)=$${ema13.toFixed(2)}, EMA(25)=$${ema25.toFixed(2)}, EMA(50)=$${ema50.toFixed(2)}, ${priceChange > 0 ? "up" : "down"} ${Math.abs(priceChange).toFixed(1)}%. Provide market Support and resistance levels for the day trading, key insights and trend analysis in 200 words or less. Be concise and actionable.`;
+    let aiReasoning = `Sentiment ${sentiment}. Price $${currentPrice.toFixed(2)}. RSI(14) ${rsi14.toFixed(1)}. SMA21 $${sma21.toFixed(2)}, SMA50 $${sma50.toFixed(2)}, SMA200 $${sma200.toFixed(2)}. Change ${priceChange.toFixed(1)}%.`;
+    const prompt = `Analyze stock ${symbol}: Current price $${currentPrice.toFixed(2)}, RSI(14)=${rsi14.toFixed(1)}, SMA(21)=$${sma21.toFixed(2)}, SMA(50)=$${sma50.toFixed(2)}, SMA(200)=$${sma200.toFixed(2)}, ${priceChange > 0 ? "up" : "down"} ${Math.abs(priceChange).toFixed(1)}%. Provide market Support and resistance levels for the day trading, key insights and trend analysis in 200 words or less. Be concise and actionable. YOU MUST RESPOND ONLY IN ENGLISH.`;
 
     if (geminiApiKey) {
       try {
@@ -219,13 +213,13 @@ const server = async (req: Request) => {
       analysis: {
         technical_indicators: {
           rsi_14: parseFloat(rsi14.toFixed(2)),
-          ema_13: parseFloat(ema13.toFixed(2)),
-          ema_25: parseFloat(ema25.toFixed(2)),
-          ema_50: parseFloat(ema50.toFixed(2)),
+          sma_21: parseFloat(sma21.toFixed(2)),
+          sma_50: parseFloat(sma50.toFixed(2)),
+          sma_200: parseFloat(sma200.toFixed(2)),
           price_change: parseFloat(priceChange.toFixed(2)),
         },
         market_conditions: {
-          trend: ema13 > ema50 ? "uptrend" : "downtrend",
+          trend: sma21 > sma200 ? "uptrend" : "downtrend",
           strength: Math.abs(rsi14 - 50) > 20 ? "strong" : "moderate",
         },
       },

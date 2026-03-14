@@ -42,8 +42,12 @@ const server = async (req: Request) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         input: { text },
-        voice: { languageCode: "en-US", name: "en-US-Journey-F" },
-        audioConfig: { audioEncoding: "MP3" },
+        voice: { languageCode: "en-US", name: "en-US-Studio-O" },
+        audioConfig: { 
+          audioEncoding: "MP3",
+          speakingRate: 0.85, // Slower for better pronunciation as requested
+          pitch: 0.0          // Neutral pitch
+        },
       }),
     });
 

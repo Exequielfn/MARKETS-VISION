@@ -1,4 +1,13 @@
 terraform {
+  cloud {
+    organization = "MarketsVision"
+
+    workspaces {
+      project = "MARKETS-VISION"
+      name    = "MARKETS-VISION"
+    }
+  }
+
   required_providers {
     vercel = {
       source  = "vercel/vercel"
@@ -9,16 +18,20 @@ terraform {
 
 provider "vercel" {
   api_token = var.vercel_api_token
-  team_id   = var.vercel_team_id
+  team      = var.vercel_team_id
 }
 
 resource "vercel_project" "markets_vision" {
-  name      = "markets-vision"
-  framework = "vite"
+  name        = "markets-vision"
+  framework   = "vite"
 
   git_repository = {
     type = "github"
     repo = var.github_repo
+  }
+
+  vercel_authentication = {
+    protect_production = false
   }
 
   environment = [
@@ -42,5 +55,6 @@ resource "vercel_project" "markets_vision" {
 
 resource "vercel_deployment" "production" {
   project_id = vercel_project.markets_vision.id
+  ref        = "main"
   production = true
 }
