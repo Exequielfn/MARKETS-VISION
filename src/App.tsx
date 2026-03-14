@@ -4,7 +4,7 @@ import { RecentAnalyses } from "./components/RecentPredictions";
 import { UserStats } from "./components/UserStats";
 import { NotificationBanner } from "./components/NotificationBanner";
 import { DarkModeToggle } from "./components/DarkModeToggle";
-import MarketsLogo from "./Markets_Logo_New.png";
+import MarketsLogo from "../Market_vision_3.png";
 
 function App() {
   return (
@@ -16,9 +16,9 @@ function App() {
           <div className="flex flex-col sm:flex-row items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-0">
               <button 
-                onClick={() => window.location.reload()} 
-                className="transition-transform hover:scale-105 active:scale-95 duration-200 focus:outline-none"
-                title="Reload Page"
+                onClick={() => window.location.reload()}
+                className="hover:opacity-80 transition-opacity focus:outline-none"
+                title="Refresh Page"
               >
                 <img src={MarketsLogo} alt="Markets Vision" className="h-10 sm:h-12 w-auto" />
               </button>

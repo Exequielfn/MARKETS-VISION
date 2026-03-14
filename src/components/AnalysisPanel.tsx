@@ -110,7 +110,7 @@ export function AnalysisPanel() {
     setResult(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke("analyze-crypto", {
+      const { data, error } = await supabase.functions.invoke("analyze-markets", {
         body: { symbol: overrideSymbol.toUpperCase(), walletAddress: publicKey },
       });
 

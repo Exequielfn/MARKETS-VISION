@@ -61,6 +61,13 @@ export const speak = async (text: string) => {
     // Fallback to Web Speech if Cloud/Supabase fails
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US'; // ENFORCE ENGLISH FALLBACK
+      
+      // Try to find a better English voice if available
+      const voices = window.speechSynthesis.getVoices();
+      const enVoice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en'));
+      if (enVoice) utterance.voice = enVoice;
+
       utterance.onend = () => setSpeaking(false);
       window.speechSynthesis.speak(utterance);
     }

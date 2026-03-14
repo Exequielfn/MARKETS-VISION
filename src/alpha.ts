@@ -41,7 +41,7 @@ export function useCryptoAnalysis(symbol: string) {
     setError(null);
 
     const controller = new AbortController();
-    fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-crypto`, {
+    fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-markets`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

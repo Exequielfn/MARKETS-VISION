@@ -184,7 +184,7 @@ const server = async (req: Request) => {
           method: "POST",
           headers: { Authorization: `Bearer ${geminiApiKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "deepseek-v3.2",
+            model: "gemini-3.1-pro",
             messages: [
               { role: "system", content: "You are an expert financial analyst providing trading insights and market analysis." },
               { role: "user", content: prompt }
